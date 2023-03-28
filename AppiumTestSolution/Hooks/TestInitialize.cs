@@ -1,26 +1,26 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AppiumTestSolution.Utilities;
+﻿using AppiumTestSolution.Base;
+using AppiumTestSolution.Config;
 using NUnit.Framework;
+using OpenQA.Selenium.Appium;
+using OpenQA.Selenium.Appium.Android;
+using TechTalk.SpecFlow;
 
 namespace AppiumTestSolution.Hooks
 {
-    [TestFixture]
-    public class TestInitialize : Base 
+    [Binding]
+    public class TestInitialize : Base.Base 
     {
-        [SetUp]
+        [BeforeScenario]
         public void Initialize()
         {
-            AndroidContext = StartAppiumServerForHybrid();
+            ConfigReader.InitializeSettings();
+            DriverFactory.Instance.InitAppiumDriver<AndroidDriver<AppiumWebElement>>(MobileType.Hybrid);
         }
 
         [TearDown]
         public void Cleanup()
         {
-            AppiumUtilities.CloseAppiumServer();
+            DriverFactory.Instance.CloseAppiumApp();
         }
 
     }
